@@ -64,13 +64,13 @@ function apiCall() {
 function updateTemperatureDisplay(temperaturesByDay) {
     Object.entries(temperaturesByDay).forEach(([date, temps], index) => {
         const dayIndex = index + 1;
-        
+
         try {
-            // Update the high temperature display
+            // Update the high temperature 
             const highTempElement = document.getElementById(`day${dayIndex}HighTemp`);
             highTempElement.textContent = `High: ${temps.maxTemp.toFixed(1)}°C`;
-            
-            // Update the low temperature display
+
+            // Update the low temperature 
             const lowTempElement = document.getElementById(`day${dayIndex}LowTemp`);
             lowTempElement.textContent = `Low: ${temps.minTemp.toFixed(1)}°C`;
         } catch (error) {
@@ -78,49 +78,49 @@ function updateTemperatureDisplay(temperaturesByDay) {
         }
     });
 }
-  
-  function processTemperatures(data) {
+
+function processTemperatures(data) {
     // Group temperatures by date
     const temperaturesByDay = {};
-  
+
     // Iterate through the list of forecasts
     data.list.forEach((forecast) => {
-      // Convert timestamp to date string
-      const date = new Date(forecast.dt * 1000).toISOString().split('T')[0];
-  
-      // If this date isn't in our collection, create a new entry
-      if (!temperaturesByDay[date]) {
-        temperaturesByDay[date] = {
-          minTemp: forecast.main.temp_min,
-          maxTemp: forecast.main.temp_max
-        };
-      } else {
-        // Update min and max temperatures
-        temperaturesByDay[date].minTemp = Math.min(
-          temperaturesByDay[date].minTemp,
-          forecast.main.temp_min
-        );
-        temperaturesByDay[date].maxTemp = Math.max(
-          temperaturesByDay[date].maxTemp,
-          forecast.main.temp_max
-        );
-      }
-    });
-  
-    // Update the temperature display
-    updateTemperatureDisplay(temperaturesByDay);
-  
-    return temperaturesByDay;
-  }
-  
+        // Convert timestamp to date string
+        const date = new Date(forecast.dt * 1000).toISOString().split('T')[0];
 
-locationSearch.addEventListener('change', function() {
-    // Get the input value
+        // If this date isn't in collection, create a new entry
+        if (!temperaturesByDay[date]) {
+            temperaturesByDay[date] = {
+                minTemp: forecast.main.temp_min,
+                maxTemp: forecast.main.temp_max
+            };
+        } else {
+
+            temperaturesByDay[date].minTemp = Math.min(
+                temperaturesByDay[date].minTemp,
+                forecast.main.temp_min
+            );
+            temperaturesByDay[date].maxTemp = Math.max(
+                temperaturesByDay[date].maxTemp,
+                forecast.main.temp_max
+            );
+        }
+    });
+
+
+    updateTemperatureDisplay(temperaturesByDay);
+
+    return temperaturesByDay;
+}
+
+
+locationSearch.addEventListener('change', function () {
+
     const input = this.value;
-    
+
     // Split the input by comma and trim whitespace
     const parts = input.split(',').map(part => part.trim());
-    
+
     // Assign parts based on input length
     if (parts.length === 3) {
         cityName = parts[0];
@@ -129,19 +129,17 @@ locationSearch.addEventListener('change', function() {
     } else if (parts.length === 2) {
         cityName = parts[0];
         stateCode = parts[1];
-        countryCode = ''; // Reset country code
+        countryCode = '';
     } else if (parts.length === 1) {
         cityName = parts[0];
         stateCode = '';
         countryCode = '';
     }
-    
-    // Log the separated variables
+
     console.log('City:', cityName);
     console.log('State:', stateCode);
     console.log('Country:', countryCode);
 
-    // Call the API
     apiCall();
 });
 
