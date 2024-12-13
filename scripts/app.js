@@ -142,12 +142,20 @@ function updateTemperatureDisplay(temperaturesByDay) {
             const dayIndex = index + 1;
             const highTempElement = document.getElementById(`day${dayIndex}HighTemp`);
             const lowTempElement = document.getElementById(`day${dayIndex}LowTemp`);
+            
+            // Create copy elements for high temperatures
+            const highTempCopyElement = document.getElementById(`day${dayIndex}HighTemp-copy`);
 
             if (highTempElement && lowTempElement) {
                 const highF = celsiusToFahrenheit(temps.maxTemp);
                 const lowF = celsiusToFahrenheit(temps.minTemp);
                 highTempElement.textContent = `High: ${highF.toFixed(1)}°F`;
                 lowTempElement.textContent = `Low: ${lowF.toFixed(1)}°F`;
+                
+                // Update copy elements if they exist
+                if (highTempCopyElement) {
+                    highTempCopyElement.textContent = `${highF.toFixed(1)}°F`;
+                }
             }
         }
     });
@@ -209,16 +217,14 @@ function saveCurrentLocation() {
     if (!savedLocations.includes(locationString)) {
         savedLocations.push(locationString);
         localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
-        const starImage = document.getElementById('saveBtn').querySelector('img');
-        if (starImage) {
-            starImage.src = 'assets/FavoriteStar.png'; // Update star immediately
-        }
         updateSavedLocationsList();
+        updateStarImage(); // Update the star when location is saved
     }
 }
 
 saveBtn.addEventListener('click', function(){
     saveCurrentLocation();
+    loadSavedLocation();
 });
 
 function loadSavedLocation(locationString) {
