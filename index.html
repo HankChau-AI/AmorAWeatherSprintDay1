@@ -16,46 +16,50 @@
     
     <div class="pageGrid">
 
+    
       <label for="boxNumber" class="form-label">Enter Location</label>
       <textarea id="locationSearch" class="form-control" id="boxNumber"  maxlength="99" rows="1"></textarea>
 
+      <button id="saveBtn">Save Location</button>
+      <div id="savedLocationsList"></div>
+
       <div class="mainContainer">
-        <h1>Location</h1>
-        <h1>Temperature</h1>
-        <h3>Date</h3>
-        <h3>Condition</h3>
+        <h1 id="Location">Location</h1>
+        <h1 id="currentTemp">Temperature</h1>
+        <h3 id="date">Date</h3>
+        <h3 id="condition">Condition</h3>
         <div class="row d-flex justify-content-around">
-          <h3>High:</h3>
-          <h3>Low:</h3>
+          <h3 id="day0HighTemp">High:</h3>
+          <h3 id="day0LowTemp">Low:</h3>
         </div>
       </div>
 
       <div class="day1Container">
-        <h1>Day</h1>
+        <h1 id="date1">Day</h1>
         <h1>Temp  </h1>
-        <h1 id="day1HighTemp">High</h1>
-        <h1 id="day1LowTemp">Low</h1>
+        <h1 id="day1HighTemp-copy">High</h1> <!-- Changed ID -->
+        <h1 id="day1LowTemp-copy">Low</h1>   <!-- Changed ID -->
       </div>
       <div class="day2Container">
-        <h1>Day</h1>
+        <h1 id="date2" >Day</h1>
         <h1>Temp</h1>
         <h1 id="day2HighTemp">High</h1>
         <h1 id="day2LowTemp">Low</h1>
       </div>
       <div class="day3Container">
-        <h1>Day</h1>
+        <h1 id="date3">Day</h1>
         <h1>Temp</h1>
         <h1 id="day3HighTemp">High</h1>
         <h1 id="day3LowTemp">Low</h1>
       </div>
       <div class="day4Container">
-        <h1>Day</h1>
+        <h1 id="date4">Day</h1>
         <h1>Temp</h1>
         <h1 id="day4HighTemp">High</h1>
         <h1 id="day4LowTemp">Low</h1>
       </div>
       <div class="day5Container">
-        <h1>Day</h1>
+        <h1 id="date5">Day</h1>
         <h1>Temp</h1>
         <h1 id="day5HighTemp">High</h1>
         <h1 id="day5LowTemp">Low</h1>

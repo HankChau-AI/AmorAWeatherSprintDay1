@@ -12,7 +12,7 @@ body{
 
 .pageGrid{
     display: grid;
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, auto);
     align-content: center;
     gap: 1rem;
@@ -45,6 +45,8 @@ body{
     background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
+    text-align: center;
+
 
 }
 .day2Container{
@@ -54,6 +56,8 @@ body{
     background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
+    text-align: center;
+
 
 }
 .day3Container{
@@ -63,6 +67,8 @@ body{
     background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
+    text-align: center;
+
 
 }
 .day4Container{
@@ -72,6 +78,8 @@ body{
     background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
+    text-align: center;
+
 }
 .day5Container{
     grid-column: 5;
@@ -80,6 +88,8 @@ body{
     background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
+    text-align: center;
+
 
 }
 
