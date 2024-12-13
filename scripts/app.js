@@ -188,23 +188,43 @@ function processTemperatures(data) {
 
 
 
+function updateStarImage() {
+    const locationString = locationSearch.value;
+    const starImage = document.getElementById('saveBtn').querySelector('img') || document.createElement('img');
+    
+    if (savedLocations.includes(locationString)) {
+        starImage.src = 'assets/FavoriteStar.png';
+    } else {
+        starImage.src = 'assets/greyStar.png';
+    }
+    
+    // If the image isn't already in the button, add it
+    if (!document.getElementById('saveBtn').querySelector('img')) {
+        document.getElementById('saveBtn').appendChild(starImage);
+    }
+}
+
 function saveCurrentLocation() {
     const locationString = locationSearch.value;
     if (!savedLocations.includes(locationString)) {
         savedLocations.push(locationString);
         localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+        const starImage = document.getElementById('saveBtn').querySelector('img');
+        if (starImage) {
+            starImage.src = 'assets/FavoriteStar.png'; // Update star immediately
+        }
         updateSavedLocationsList();
     }
 }
 
 saveBtn.addEventListener('click', function(){
     saveCurrentLocation();
-    loadSavedLocation();
-})
+});
 
 function loadSavedLocation(locationString) {
     locationSearch.value = locationString;
     locationSearch.dispatchEvent(new Event('change'));
+    updateStarImage(); // Update star when loading a saved location
 }
 
 function updateSavedLocationsList() {
@@ -225,6 +245,7 @@ function updateSavedLocationsList() {
                 savedLocations.splice(index, 1);
                 localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
                 updateSavedLocationsList();
+                updateStarImage(); // Update star when deleting a location
             };
 
             div.appendChild(loadButton);
@@ -233,6 +254,36 @@ function updateSavedLocationsList() {
         });
     }
 }
+
+// Initialize the saved locations list
+let savedLocationsList = document.getElementById('savedLocationsList');
+if (!savedLocationsList) {
+    savedLocationsList = document.createElement('div');
+    savedLocationsList.id = 'savedLocationsList';
+    savedLocationsList.style.display = 'none';
+    document.body.appendChild(savedLocationsList);
+}
+
+// Add toggle functionality to openSaveBtn
+openSaveBtn.addEventListener('click', function() {
+    const savedLocationsList = document.getElementById('savedLocationsList');
+    if (savedLocationsList) {
+        if (savedLocationsList.style.display === 'none') {
+            savedLocationsList.style.display = 'block';
+            updateSavedLocationsList();
+        } else {
+            savedLocationsList.style.display = 'none';
+        }
+    }
+});
+
+// Add event listener to update star when location search changes
+locationSearch.addEventListener('change', function() {
+    updateStarImage();
+});
+
+// Initial star image update
+updateStarImage();
 
 
 
