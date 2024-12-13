@@ -36,6 +36,9 @@ let saveBtn = document.getElementById("saveBtn")
 
 let savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
 
+let cityNames = [];
+let citySearchTimeout;
+
 
 // let date1 = document.getElementById('date1')
 // let date2 = document.getElementById('date2')
@@ -230,6 +233,121 @@ function updateSavedLocationsList() {
     }
 }
 
+
+
+
+
+
+
+
+function setupCityAutocomplete() {
+    const locationSearch = document.getElementById('locationSearch');
+    const autocompleteList = document.createElement('ul');
+    autocompleteList.id = 'autocompleteList';
+    autocompleteList.style.position = 'absolute';
+    autocompleteList.style.listStyleType = 'none';
+    autocompleteList.style.margin = '0';
+    autocompleteList.style.padding = '0';
+    autocompleteList.style.maxHeight = '200px';
+    autocompleteList.style.overflowY = 'auto';
+    autocompleteList.style.border = '1px solid #ddd';
+    autocompleteList.style.display = 'none';
+    autocompleteList.style.backgroundColor = 'white';
+    autocompleteList.style.width = locationSearch.offsetWidth + 'px';
+
+    // Insert the autocomplete list after the search input
+    locationSearch.parentNode.insertBefore(autocompleteList, locationSearch.nextSibling);
+
+    locationSearch.addEventListener('input', function() {
+        const userInput = this.value.trim();
+        
+        // Clear previous timeout
+        if (citySearchTimeout) {
+            clearTimeout(citySearchTimeout);
+        }
+
+        // Only search if input is at least 2 characters
+        if (userInput.length < 2) {
+            autocompleteList.style.display = 'none';
+            return;
+        }
+
+        // Debounce the API call to prevent too many requests
+        citySearchTimeout = setTimeout(() => {
+            fetchCitySuggestions(userInput);
+        }, 300);
+    });
+
+    // Close autocomplete list when clicking outside
+    document.addEventListener('click', function(e) {
+        if (e.target !== locationSearch && e.target !== autocompleteList) {
+            autocompleteList.style.display = 'none';
+        }
+    });
+
+    function fetchCitySuggestions(query) {
+        fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${APIKEY}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(cities => {
+                // Clear previous suggestions
+                autocompleteList.innerHTML = '';
+
+                if (cities.length > 0) {
+                    autocompleteList.style.display = 'block';
+                    
+                    cities.forEach(city => {
+                        const listItem = document.createElement('li');
+                        // Format: City, State Code, Country Code
+                        const cityString = city.state 
+                            ? `${city.name}, ${city.state}, ${city.country}`
+                            : `${city.name}, ${city.country}`;
+                        
+                        listItem.textContent = cityString;
+                        listItem.style.padding = '10px';
+                        listItem.style.cursor = 'pointer';
+                        listItem.style.borderBottom = '1px solid #eee';
+                        listItem.style.color = 'black';
+                        listItem.style.backgroundColor = 'white';
+
+                        // Select city when clicked
+                        listItem.addEventListener('click', () => {
+                            locationSearch.value = cityString;
+                            autocompleteList.style.display = 'none';
+                            // Trigger the change event to fetch weather data
+                            locationSearch.dispatchEvent(new Event('change'));
+                        });
+
+                        autocompleteList.appendChild(listItem);
+                    });
+                } else {
+                    autocompleteList.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching city suggestions:', error);
+                autocompleteList.style.display = 'none';
+            });
+    }
+}
+
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', setupCityAutocomplete);
+
+
+
+
+
+
+
+
+
+
+
 locationSearch.addEventListener('change', function () {
     const input = this.value;
 
@@ -255,4 +373,8 @@ locationSearch.addEventListener('change', function () {
 
     apiCall();
 });
+
+
+
+
 
