@@ -46,7 +46,6 @@ let savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
 
 
 function apiCall() {
-    // Construct the query string based on available information
     let query = cityName;
     if (stateCode) query += `,${stateCode}`;
     if (countryCode) query += `,${countryCode}`;
@@ -59,7 +58,6 @@ function apiCall() {
             return response.json();
         })
         .then((data) => {
-            // Process temperature data
             console.log(data);
             const dailyTemperatures = processTemperatures(data);
 
@@ -67,7 +65,6 @@ function apiCall() {
 
             updateDateDisplay(data);
 
-            // Log temperatures in a readable format
             console.log("Daily Minimum and Maximum Temperatures:");
             Object.entries(dailyTemperatures).forEach(([date, temps]) => {
                 console.log(`${date}: 
@@ -85,25 +82,20 @@ function celsiusToFahrenheit(celsius) {
 }
 
 function updateDateDisplay(data) {
-    // Update the date elements for the next 5 days
     const dailyTemperatures = processTemperatures(data);
     console.log("Daily Temperatures:");
     let dateCounter = 1;
     
     Object.entries(dailyTemperatures).forEach(([date, temps]) => {
-        // Get the element by sequential ID
         const dateElement = document.getElementById(`date${dateCounter}`);
         
-        // Convert date from YYYY-MM-DD to MM/DD/YYYY
         const [year, month, day] = date.split('-');
         const formattedDate = `${month}/${day}/${year}`;
         
-        // Set the text content of the element to the formatted date
         if (dateElement) {
             dateElement.textContent = formattedDate;
         }
         
-        // Increment the counter for the next iteration
         dateCounter++;
     });
 }
@@ -123,9 +115,7 @@ function getCurrentWeatherData(data) {
 
 function updateTemperatureDisplay(temperaturesByDay) {
     Object.entries(temperaturesByDay).forEach(([date, temps], index) => {
-        // Check if it's the first day (index 0)
         if (index === 0) {
-            // Update first instance
             const day0HighTemp = document.getElementById('day0HighTemp');
             const day0LowTemp = document.getElementById('day0LowTemp');
 
@@ -136,7 +126,6 @@ function updateTemperatureDisplay(temperaturesByDay) {
                 day0LowTemp.textContent = `High: ${highF.toFixed(1)}°F`;
             }
 
-            // Update second instance (copy)
             const day1HighTempCopy = document.getElementById('day1HighTemp-copy');
             const day1LowTempCopy = document.getElementById('day1LowTemp-copy');
 
@@ -162,15 +151,11 @@ function updateTemperatureDisplay(temperaturesByDay) {
 }
 
 function processTemperatures(data) {
-    // Group temperatures by date
     const temperaturesByDay = {};
 
-    // Iterate through the list of forecasts
     data.list.forEach((forecast) => {
-        // Convert timestamp to date string
         const date = new Date(forecast.dt * 1000).toISOString().split('T')[0];
 
-        // If this date isn't in collection, create a new entry
         if (!temperaturesByDay[date]) {
             temperaturesByDay[date] = {
                 minTemp: forecast.main.temp_min,
@@ -213,14 +198,11 @@ saveBtn.addEventListener('click', function(){
     saveCurrentLocation();
 })
 
-// Add this function to load a saved location
 function loadSavedLocation(locationString) {
     locationSearch.value = locationString;
-    // Trigger the existing change event handler
     locationSearch.dispatchEvent(new Event('change'));
 }
 
-// Add this function to display the saved locations
 function updateSavedLocationsList() {
     const savedLocationsList = document.getElementById('savedLocationsList');
     if (savedLocationsList) {
@@ -251,10 +233,8 @@ function updateSavedLocationsList() {
 locationSearch.addEventListener('change', function () {
     const input = this.value;
 
-    // Split the input by comma and trim whitespace
     const parts = input.split(',').map(part => part.trim());
 
-    // Assign parts based on input length
     if (parts.length === 3) {
         cityName = parts[0];
         stateCode = parts[1];
