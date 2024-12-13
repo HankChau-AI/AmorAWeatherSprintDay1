@@ -16,51 +16,72 @@
     
     <div class="pageGrid">
 
-    
-      <label for="boxNumber" class="form-label">Enter Location</label>
-      <textarea id="locationSearch" class="form-control" id="boxNumber"  maxlength="99" rows="1"></textarea>
-
-      <button id="saveBtn">Save Location</button>
-      <div id="savedLocationsList"></div>
-
-      <div class="mainContainer">
-        <h1 id="Location">Location</h1>
-        <h1 id="currentTemp">Temperature</h1>
-        <h3 id="date">Date</h3>
-        <h3 id="condition">Condition</h3>
-        <div class="row d-flex justify-content-around">
-          <h3 id="day0HighTemp">High:</h3>
-          <h3 id="day0LowTemp">Low:</h3>
+      <div class="searchBar">
+        <div class="innerSearchBar">
+          <button id="openSaveBtn"><img src="/assets/FavoriteStar.png" alt="Star">Favorites</button>
+          <textarea id="locationSearch" class="form-control" id="boxNumber" style="border-radius: 3rem; background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 20 20\' fill=\'currentColor\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath fill-rule=\'evenodd\' d=\'M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z\' clip-rule=\'evenodd\'/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: 1rem center; background-size: 1.5rem; padding-left: 3rem;" placeholder="Search" maxlength="999" rows="1"></textarea>
         </div>
       </div>
 
+      <div class="savedLocationsDropDown">
+        <div id="savedLocationsList"></div>
+      </div>
+
+      
+
+
+      <div class="mainContainer">
+        <div class="mainContainerText">
+          
+          <div class="div" style="display: flex; justify-content: center;">
+            <button id="saveBtn"><img src="/assets/FavoriteStar.png" alt="Star"></button>
+            <h1 id="Location"> Location</h1>
+          </div>
+          <h1 id="currentTemp">Temperature</h1>
+          <h3 id="date">Date</h3>
+          <h3 id="condition">Condition</h3>
+          <div class="row d-flex justify-content-around">
+            <div class="col-6">
+              <h3 id="day0HighTemp">High:</h3>
+            </div>
+            <div class="col-6">
+              <h3 id="day0LowTemp">Low:</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="todayText">
+        <h1>Today</h1>
+      </div>
       <div class="day1Container">
         <h1 id="date1">Day</h1>
-        <h1>Temp  </h1>
+        <h1>Temp</h1>
         <h1 id="day1HighTemp-copy">High</h1> <!-- Changed ID -->
         <h1 id="day1LowTemp-copy">Low</h1>   <!-- Changed ID -->
       </div>
       <div class="day2Container">
         <h1 id="date2" >Day</h1>
-        <h1>Temp</h1>
+        <h1 id="day2HighTemp-copy">Temp</h1>
         <h1 id="day2HighTemp">High</h1>
         <h1 id="day2LowTemp">Low</h1>
       </div>
       <div class="day3Container">
         <h1 id="date3">Day</h1>
-        <h1>Temp</h1>
+        <h1 id="day3HighTemp-copy">Temp</h1>
         <h1 id="day3HighTemp">High</h1>
         <h1 id="day3LowTemp">Low</h1>
       </div>
       <div class="day4Container">
         <h1 id="date4">Day</h1>
-        <h1>Temp</h1>
+        <h1 id="day4HighTemp-copy">Temp</h1>
         <h1 id="day4HighTemp">High</h1>
         <h1 id="day4LowTemp">Low</h1>
       </div>
       <div class="day5Container">
         <h1 id="date5">Day</h1>
-        <h1>Temp</h1>
+        <h1 id="day5HighTemp-copy">Temp</h1>
         <h1 id="day5HighTemp">High</h1>
         <h1 id="day5LowTemp">Low</h1>
       </div>

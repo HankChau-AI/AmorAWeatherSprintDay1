@@ -199,6 +199,7 @@ function saveCurrentLocation() {
 
 saveBtn.addEventListener('click', function(){
     saveCurrentLocation();
+    loadSavedLocation();
 })
 
 function loadSavedLocation(locationString) {
@@ -213,11 +214,11 @@ function updateSavedLocationsList() {
         savedLocations.forEach((location, index) => {
             const div = document.createElement('div');
             div.style.marginBottom = '10px';
-            
+
             const loadButton = document.createElement('button');
             loadButton.textContent = location;
             loadButton.onclick = () => loadSavedLocation(location);
-            
+
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'X';
             deleteButton.onclick = () => {
@@ -225,14 +226,13 @@ function updateSavedLocationsList() {
                 localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
                 updateSavedLocationsList();
             };
-            
+
             div.appendChild(loadButton);
             div.appendChild(deleteButton);
             savedLocationsList.appendChild(div);
         });
     }
 }
-
 
 
 
