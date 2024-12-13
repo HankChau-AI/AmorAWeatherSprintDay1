@@ -196,33 +196,6 @@ function processTemperatures(data) {
 }
 
 
-locationSearch.addEventListener('change', function () {
-    const input = this.value;
-
-    // Split the input by comma and trim whitespace
-    const parts = input.split(',').map(part => part.trim());
-
-    // Assign parts based on input length
-    if (parts.length === 3) {
-        cityName = parts[0];
-        stateCode = parts[1];
-        countryCode = parts[2];
-    } else if (parts.length === 2) {
-        cityName = parts[0];
-        stateCode = parts[1];
-        countryCode = '';
-    } else if (parts.length === 1) {
-        cityName = parts[0];
-        stateCode = '';
-        countryCode = '';
-    }
-
-    console.log('City:', cityName);
-    console.log('State:', stateCode);
-    console.log('Country:', countryCode);
-
-    apiCall();
-});
 
 
 
@@ -274,4 +247,32 @@ function updateSavedLocationsList() {
         });
     }
 }
+
+locationSearch.addEventListener('change', function () {
+    const input = this.value;
+
+    // Split the input by comma and trim whitespace
+    const parts = input.split(',').map(part => part.trim());
+
+    // Assign parts based on input length
+    if (parts.length === 3) {
+        cityName = parts[0];
+        stateCode = parts[1];
+        countryCode = parts[2];
+    } else if (parts.length === 2) {
+        cityName = parts[0];
+        stateCode = parts[1];
+        countryCode = '';
+    } else if (parts.length === 1) {
+        cityName = parts[0];
+        stateCode = '';
+        countryCode = '';
+    }
+
+    console.log('City:', cityName);
+    console.log('State:', stateCode);
+    console.log('Country:', countryCode);
+
+    apiCall();
+});
 
