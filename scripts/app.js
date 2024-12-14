@@ -239,6 +239,7 @@ function updateSavedLocationsList() {
             loadButton.style.whiteSpace = 'nowrap'; 
             loadButton.style.overflow = 'hidden'; 
             loadButton.style.textOverflow = 'ellipsis'; 
+            loadButton.style.textDecoration = 'none'; // Remove underline
             loadButton.onclick = () => loadSavedLocation(location);
 
             const deleteButton = document.createElement('button');
