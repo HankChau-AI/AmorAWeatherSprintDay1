@@ -131,12 +131,19 @@ function updateTemperatureDisplay(temperaturesByDay) {
 
             const day1HighTempCopy = document.getElementById('day1HighTemp-copy');
             const day1LowTempCopy = document.getElementById('day1LowTemp-copy');
+            const day1HighTempCopyTwo = document.getElementById('day1HighTemp-copyTwo');
 
             if (day1HighTempCopy && day1LowTempCopy) {
                 const highF = celsiusToFahrenheit(temps.maxTemp);
                 const lowF = celsiusToFahrenheit(temps.minTemp);
                 day1HighTempCopy.textContent = `High: ${highF.toFixed(1)}°F`;
                 day1LowTempCopy.textContent = `Low: ${lowF.toFixed(1)}°F`;
+            }
+
+            // Add the second copy for day1
+            if (day1HighTempCopyTwo) {
+                const highF = celsiusToFahrenheit(temps.maxTemp);
+                day1HighTempCopyTwo.textContent = `${highF.toFixed(1)}°F`;
             }
         } else {
             const dayIndex = index + 1;
