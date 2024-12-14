@@ -2,21 +2,6 @@ import { APIKEY } from './environment.js';
 
 
 
-//Create the apiCall while using the APIKEY from the environment.js file
-
-// function apiCall () {
-//     fetch(`api.openweathermap.org/data/2.5/forecast?q=Lodi&appid=${APIKEY}`)
-//     .then((response) => {
-//         return response.json()
-//     })
-//     .then((data) => {
-//         console.log(data);
-//     })
-// }
-
-
-
-// apiCall();
 let locationSearch = document.getElementById("locationSearch");
 let cityName = '';
 let stateCode = '';
@@ -92,11 +77,14 @@ function updateDateDisplay(data) {
     Object.entries(dailyTemperatures).forEach(([date, temps]) => {
         const dateElement = document.getElementById(`date${dateCounter}`);
         
-        const [year, month, day] = date.split('-');
-        const formattedDate = `${month}/${day}/${year}`;
+        const currentDate = new Date(date);
+        
+        const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        const weekdayName = weekdays[currentDate.getDay()];
         
         if (dateElement) {
-            dateElement.textContent = formattedDate;
+            dateElement.textContent = weekdayName;
         }
         
         dateCounter++;
@@ -140,7 +128,6 @@ function updateTemperatureDisplay(temperaturesByDay) {
                 day1LowTempCopy.textContent = `Low: ${lowF.toFixed(1)}°F`;
             }
 
-            // Add the second copy for day1
             if (day1HighTempCopyTwo) {
                 const highF = celsiusToFahrenheit(temps.maxTemp);
                 day1HighTempCopyTwo.textContent = `${highF.toFixed(1)}°F`;
@@ -150,7 +137,6 @@ function updateTemperatureDisplay(temperaturesByDay) {
             const highTempElement = document.getElementById(`day${dayIndex}HighTemp`);
             const lowTempElement = document.getElementById(`day${dayIndex}LowTemp`);
             
-            // Create copy elements for high temperatures
             const highTempCopyElement = document.getElementById(`day${dayIndex}HighTemp-copy`);
 
             if (highTempElement && lowTempElement) {
@@ -159,7 +145,6 @@ function updateTemperatureDisplay(temperaturesByDay) {
                 highTempElement.textContent = `High: ${highF.toFixed(1)}°F`;
                 lowTempElement.textContent = `Low: ${lowF.toFixed(1)}°F`;
                 
-                // Update copy elements if they exist
                 if (highTempCopyElement) {
                     highTempCopyElement.textContent = `${highF.toFixed(1)}°F`;
                 }
@@ -213,7 +198,6 @@ function updateStarImage() {
         starImage.src = 'assets/greyStar.png';
     }
     
-    // If the image isn't already in the button, add it
     if (!document.getElementById('saveBtn').querySelector('img')) {
         document.getElementById('saveBtn').appendChild(starImage);
     }
@@ -225,7 +209,7 @@ function saveCurrentLocation() {
         savedLocations.push(locationString);
         localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
         updateSavedLocationsList();
-        updateStarImage(); // Update the star when location is saved
+        updateStarImage();
     }
 }
 
@@ -237,7 +221,7 @@ saveBtn.addEventListener('click', function(){
 function loadSavedLocation(locationString) {
     locationSearch.value = locationString;
     locationSearch.dispatchEvent(new Event('change'));
-    updateStarImage(); // Update star when loading a saved location
+    updateStarImage(); 
 }
 
 function updateSavedLocationsList() {
@@ -247,18 +231,24 @@ function updateSavedLocationsList() {
         savedLocations.forEach((location, index) => {
             const div = document.createElement('div');
             div.style.marginBottom = '10px';
+            div.style.display = 'flex'; 
+            div.style.alignItems = 'center'; 
 
             const loadButton = document.createElement('button');
             loadButton.textContent = location;
+            loadButton.style.whiteSpace = 'nowrap'; 
+            loadButton.style.overflow = 'hidden'; 
+            loadButton.style.textOverflow = 'ellipsis'; 
             loadButton.onclick = () => loadSavedLocation(location);
 
             const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'X';
+            deleteButton.innerHTML = `<img src="assets/FavoriteStar.png" alt="Delete" style="width: 20px; height: 20px;">`;
+            deleteButton.style.marginLeft = '5px'; 
             deleteButton.onclick = () => {
                 savedLocations.splice(index, 1);
                 localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
                 updateSavedLocationsList();
-                updateStarImage(); // Update star when deleting a location
+                updateStarImage(); 
             };
 
             div.appendChild(loadButton);
@@ -268,7 +258,6 @@ function updateSavedLocationsList() {
     }
 }
 
-// Initialize the saved locations list
 let savedLocationsList = document.getElementById('savedLocationsList');
 if (!savedLocationsList) {
     savedLocationsList = document.createElement('div');
@@ -277,7 +266,6 @@ if (!savedLocationsList) {
     document.body.appendChild(savedLocationsList);
 }
 
-// Add toggle functionality to openSaveBtn
 openSaveBtn.addEventListener('click', function() {
     const savedLocationsList = document.getElementById('savedLocationsList');
     if (savedLocationsList) {
@@ -290,12 +278,10 @@ openSaveBtn.addEventListener('click', function() {
     }
 });
 
-// Add event listener to update star when location search changes
 locationSearch.addEventListener('change', function() {
     updateStarImage();
 });
 
-// Initial star image update
 updateStarImage();
 
 
@@ -319,30 +305,25 @@ function setupCityAutocomplete() {
     autocompleteList.style.backgroundColor = 'white';
     autocompleteList.style.width = locationSearch.offsetWidth + 'px';
 
-    // Insert the autocomplete list after the search input
     locationSearch.parentNode.insertBefore(autocompleteList, locationSearch.nextSibling);
 
     locationSearch.addEventListener('input', function() {
         const userInput = this.value.trim();
         
-        // Clear previous timeout
         if (citySearchTimeout) {
             clearTimeout(citySearchTimeout);
         }
 
-        // Only search if input is at least 2 characters
         if (userInput.length < 2) {
             autocompleteList.style.display = 'none';
             return;
         }
 
-        // Debounce the API call to prevent too many requests
         citySearchTimeout = setTimeout(() => {
             fetchCitySuggestions(userInput);
         }, 300);
     });
 
-    // Close autocomplete list when clicking outside
     document.addEventListener('click', function(e) {
         if (e.target !== locationSearch && e.target !== autocompleteList) {
             autocompleteList.style.display = 'none';
@@ -358,7 +339,6 @@ function setupCityAutocomplete() {
                 return response.json();
             })
             .then(cities => {
-                // Clear previous suggestions
                 autocompleteList.innerHTML = '';
 
                 if (cities.length > 0) {
@@ -366,7 +346,6 @@ function setupCityAutocomplete() {
                     
                     cities.forEach(city => {
                         const listItem = document.createElement('li');
-                        // Format: City, State Code, Country Code
                         const cityString = city.state 
                             ? `${city.name}, ${city.state}, ${city.country}`
                             : `${city.name}, ${city.country}`;
@@ -378,11 +357,9 @@ function setupCityAutocomplete() {
                         listItem.style.color = 'black';
                         listItem.style.backgroundColor = 'white';
 
-                        // Select city when clicked
                         listItem.addEventListener('click', () => {
                             locationSearch.value = cityString;
                             autocompleteList.style.display = 'none';
-                            // Trigger the change event to fetch weather data
                             locationSearch.dispatchEvent(new Event('change'));
                         });
 
@@ -399,7 +376,6 @@ function setupCityAutocomplete() {
     }
 }
 
-// Call this function when the page loads
 document.addEventListener('DOMContentLoaded', setupCityAutocomplete);
 
 
